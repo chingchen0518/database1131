@@ -1,0 +1,44 @@
+{% load static %}
+
+
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark d-flex">
+      <a class="navbar-brand" href="{% url 'homepage' %}">補習中心</a>
+{#      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">#}
+{#        <span class="navbar-toggler-icon"></span>#}
+{#      </button>#}
+{#      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">#}
+        <div class="navbar-nav">
+          <a class="nav-item nav-link" href="{% url 'class_list' available=1 %}">課程列表</a>
+          <a class="nav-item nav-link" href="{% url 'student_list' %}">學生列表</a>
+
+
+
+          {# login才看得到的#}
+        {% if session.login %}
+            {% if session.permission == 1 %}
+                  <a class="nav-item nav-link" href="{% url 'add_class' %}">添加課程</a>
+                  <a class="nav-item nav-link" href="{% url 'add_teacher' %}">添加教師</a>
+                  <a class="nav-item nav-link" href="{% url 'add_category' %}">添加課程類別</a>
+                  <a class="nav-item nav-link" href="{% url 'add_student' %}">新增學生</a>
+                  <a class="nav-item nav-link" href="{% url 'add_time' %}">本期新增時段</a>
+                  <a class="nav-item nav-link" href="{% url 'statics' %}">統計資料</a>
+
+                  <a class="nav-item nav-link bg-info border-info text-white border rounded fw-bold" href="{% url 'sem_convert' %}">學期結轉</a>
+
+            {% endif %}
+
+            <a  class="nav-item nav-link bg-danger border-danger text-white border rounded fw-bold" style="margin-left:20px;" href="{% url 'logout_action' %}">退出</a>
+
+            {% if session.permission == 1 %}
+                <a id="add_account" class="nav-item nav-link" href="{% url 'add_account' 0 %}" style="color:#212529" onmouseover='this.style.color="white"' onmouseout='this.style.color="#212529"'>新增賬號</a>
+            {% endif %}
+
+        {% else %}
+            <a class="nav-item nav-link bg-success border-success text-white border rounded fw-bold" href="{% url 'login_page' %}">登錄</a>
+        {% endif %}
+
+
+
+        </div>
+{#      </div>#}
+</nav>

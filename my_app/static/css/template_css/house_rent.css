@@ -1,0 +1,143 @@
+/*基本資訊*/
+#basic_information{
+    /*display:flex;*/
+    /*display:flex;*/
+    /*background-color: black;*/
+}
+
+#house_information{
+    font-size:21px;
+    float: right;
+}
+
+#page-slider{
+    float: left;
+}
+.bold{
+    font-weight:bold;
+}
+
+#house_information>li{
+    margin:7px;
+}
+
+/*滑動圖片*/
+#page-slider{
+    height:300px;
+    width:400px;
+
+}
+#page-slider img{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/*side_bar（edit，delete）*/
+.call-to-action-btn{
+    display:flex;
+    justify-content: center;
+    font-size:15px;
+}
+
+#edit_button_a,#delete_button_a{
+    background-color: black;
+    color:white;
+    border:black;
+}
+
+#edit_button_a:hover{
+    background-color: #716d6d;
+    color: white;
+}
+
+#delete_button_a:hover{
+    background-color: red;
+    color: white;
+ }
+
+/*Delete confirm box*/
+#delete_title{
+    font-weight: bold;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#delete_yes{
+    background-color: #f01919;
+    color: white;
+}
+
+#delete_yes:hover{
+    background-color: #7b0303;
+    color: white;
+}
+#delete_no:hover{
+    background-color: #025a02;
+    color: white;
+}
+
+#delete_no{
+    background-color: #1cc21c;
+    color: white;
+}
+/*Equipment*/
+/*#equipment{*/
+/*    display:flex;*/
+/*}*/
+.equipment_row{
+    margin-left:10%
+}
+.equ_img{
+    margin:20px;
+    opacity:1;
+}
+
+.equ_img_no{
+    opacity:0.3;
+}
+
+/*Seller*/
+.quote-author{
+    font-size:30px;
+}
+
+/*rate*/
+#en_rate, #att_rate, #fa_rate{
+    flex: 100%;
+    max-width: 100%;
+}
+
+#rate{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 130px;
+}
+
+#rate h3{
+    margin-top: 20px;
+    font-size: 1.75rem;
+}
+
+#rate p{
+    float: left;
+}
+
+.star{
+    margin-top: 5px;
+}
+
+.comment-body{
+    margin-right: auto;
+}
+
+#del{
+    float: right;
+}
+
+#details{
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    padding: 0px;
+}

@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>上傳繳費記錄</title>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/css/upload_payment.css' %}" type="text/css" rel="stylesheet"/>
+    <script src="{%static '/js/upload_payment.js' %}"></script>
+
+</head>
+<body>
+    {% include 'elements/navbar.html' %}
+    <div id="upload_area" style="padding:20px;margin-top:100px;">
+        <h1>上傳繳費記錄</h1>
+        <form id="upload payment" method="POST" action="{% url 'upload_payment_action' eid=student.eid cid=student.cid sid=student.sid%}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <br>
+            <h2>課堂名稱：{{ student.category }}
+                {% if student.subject%}
+                    - {{ student.subject }}
+                {% endif %}
+            </h2>
+            <br>
+            <h2>學生姓名：{{ student.name }}</h2>
+
+{#            <div class="mb-2">#}
+{#              <span class="subtitle">學生姓名</span>#}
+{#              <div class="dropdown">#}
+{#                <input type="text" id="search" placeholder="Search...">#}
+{#                <div class="dropdown-content">#}
+{#                    <div class="dropdown-item" data-value="1">ABCDOption 1</div>#}
+{#                    <div class="dropdown-item" data-value="2">MAlaysiaon 2</div>#}
+{#                </div>#}
+{#              </div>#}
+{#            </div>#}
+
+            <br>
+
+
+            <div class="mb-4 row">
+                <div class="col-3">
+                  <span class="subtitle">金額：</span>
+                  <input class="form-control" type="number" id="amount" name="amount">
+                </div>
+
+                <div class="col-3">
+                    <span class="subtitle">日期：</span>
+                    <input type="date" class="form-control" id="start-date" name="date">
+                </div>
+
+                <div class="col-3">
+                  <span class="subtitle">繳費證明（圖片或PDF）</span>
+                  <input class="form-control" type="file" id="formFile" name="receipt">
+                </div>
+            </div>
+
+            <input class="btn btn-primary" type="submit" value="上傳">
+        </form>
+    </div>
+
+
+</body>
+</html>

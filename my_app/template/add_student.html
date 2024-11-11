@@ -1,0 +1,166 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新增學生</title>
+  <!-- 引入 Bootstrap CSS -->
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+
+  <!-- 自定义样式 -->
+  <style>
+    body {
+        background-color: #f8f8f8;
+    }
+
+    #title{
+        margin-top:100px;
+    }
+  </style>
+</head>
+
+<body>
+    {% include 'elements/navbar.html' %}
+
+<div class="container">
+  <!-- 本頁面標題 -->
+  <h1 id="title">新增學生</h1>
+
+  <form id="add_class" method="POST" action="{% url 'add_student_action' %}">
+      {% csrf_token %}
+
+    <div class="accordion" id="accordion">
+      <div class="accordion-item">
+
+        <!-- 簡介(下拉式列表) -->
+        <h2 class="accordion-header" id="introduction-heading">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#introduction" aria-expanded="true" aria-controls="introduction">
+            學生資訊
+          </button>
+        </h2>
+        <div id="introduction" class="accordion-collapse collapse show" aria-labelledby="introduction-heading" data-bs-parent="#accordion">
+          <div class="accordion-body">
+
+        <!-- 學生姓名電話，家長姓名家長電話-->
+          <div class="mb-4 row">
+            <div class="col-3">
+                <label for="name" class="form-label">學生姓名：</label>
+                <input type="text" class="form-control" id="subject" name="name" required>
+            </div>
+
+            <div class="col-3">
+                <label for="hp" class="form-label">手機號碼：</label>
+                <input type="text" class="form-control" id="subject" name="hp" required>
+            </div>
+
+            <div class="col-3">
+                <label for="parent_name" class="form-label">家長姓名：</label>
+                <input type="text" class="form-control" id="subject" name="parent_name" required>
+            </div>
+
+            <div class="col-3">
+                <label for="parent_hp" class="form-label">家長手機號碼：</label>
+                <input type="text" class="form-control" id="subject" name="parent_hp" required>
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <div class="col-4">
+                <label for="school" class="form-label">就讀學校：</label>
+                <input type="text" class="form-control" id="school" name="school" required>
+            </div>
+
+            <div class="col-4">
+                <label for="years_old" class="form-label">年級：</label>
+                    <select id="years_old" name="years_old" class="form-select" required>
+                        <option value="" disabled>全部</option>
+                        <option value="51">兒美小</option>
+                        <option value="52">兒美中</option>
+                        <option value="53">兒美大</option>
+                        {#需要學期結轉的#}
+                        <option value="7">國小一</option>
+                        <option value="8">國小二</option>
+                        <option value="9">國小三</option>
+                        <option value="10">國小四</option>
+                        <option value="11">國小五</option>
+                        <option value="12">國小六</option>
+                        <option value="13">國一</option>
+                        <option value="14">國二</option>
+                        <option value="15">國三</option>
+                        <option value="16">高一</option>
+                        <option value="17">高二</option>
+                        <option value="18">高三</option>
+                        {#需要學期結轉結束#}
+                        <option value="54">留學</option>
+                        <option value="55">社會人士</option>
+                        <option value="56">其他</option>
+                    </select>
+              </div>
+
+            <div class="col-4">
+                <label class="subtitle">生日日期：</label>
+                <input type="date" class="form-control" id="start-date" name="birthday">
+            </div>
+
+          </div>
+
+        <div class="mb-2 row">
+            <div class="col-6">
+                <label class="subtitle">地址：</label>
+                <input type="text" class="form-control" id="address" name="address">
+            </div>
+
+            <div class="col-6">
+                <label class="subtitle">備注：</label>
+                <input type="text" class="form-control" id="remarks" name="remarks">
+            </div>
+        </div>
+
+        <!-- 上傳表單按鈕 -->
+        <div class="d-flex justify-content-center mt-3">
+          <input type="submit" class="btn btn-primary" value="新增學生">
+        </div>
+  </form>
+</div>
+
+<!-- 引入 Bootstrap JS -->
+<script src="../static/js/bootstrap_js/bootstrap.min.js"></script>
+<!-- 自定义表单验证 -->
+<script>
+
+
+  function validateForm() {
+    var form = document.getElementByid("add_class");
+    var inputs = form.querySelectorAll("input, select");
+    var isValid = true;
+    var isAlerted = false; // 變數來追蹤是否已經顯示了提示訊息
+    var unfilledFields = ""; // 變數來儲存未填寫欄位
+
+    inputs.forEach(function(input) {
+      var message = input.previousElementSibling.dataset.message;
+
+      if (input.required && !input.value.trim()) {
+        isValid = false;
+        input.classList.add("required-field");
+        if (!isAlerted) {
+          isAlerted = true;
+          unfilledFields += `${message}, `;
+        }
+      }
+    });
+
+    if (isValid) {
+      alert("表單已成功提交！");
+    } else {
+      alert("請填寫所有欄位，未填欄位為: " + unfilledFields.slice(0, -2));
+    }
+  }
+
+
+</script>
+</body>
+</html>

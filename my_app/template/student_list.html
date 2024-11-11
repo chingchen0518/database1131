@@ -1,0 +1,157 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/bootstrap_css/bootstrap.min.css" rel="stylesheet">
+    <link href= "{%static '/css/student_list.css' %}" type="text/css" rel="stylesheet"/>
+    <script src="{% static 'js/student_list.js' %}"></script>
+
+    <meta charset="UTF-8">
+    <title>學生資訊</title>
+</head>
+
+<body>
+    {% include 'elements/navbar.html' %}
+
+    <h1 id="title">學生資訊</h1>
+
+    <div id="toolbar" class="mb-6 row">
+
+        <div id="select_by_age" class="col-3">
+            <label for="gradeFilter">篩選年級:</label>
+            <select id="gradeFilter">
+                <option value="all">全部</option>
+                        <option value="兒美小">兒美小</option>
+                        <option value="兒美中">兒美中</option>
+                        <option value="兒美大">兒美大</option>
+                        <option value="國小一">國小一</option>
+                        <option value="國小二">國小二</option>
+                        <option value="國小三">國小三</option>
+                        <option value="國小四">國小四</option>
+                        <option value="國小五">國小五</option>
+                        <option value="國小六">國小六</option>
+                        <option value="國一">國一</option>
+                        <option value="國二">國二</option>
+                        <option value="國三">國三</option>
+                        <option value="高一">高一</option>
+                        <option value="高二">高二</option>
+                        <option value="高三">高三</option>
+                        <option value="留學">留學</option>
+                        <option value="社會人士">社會人士</option>
+                        <option value="其他">其他</option>
+
+            </select>
+        </div>
+
+        <div class="form-check col-4 payment_filter">
+            <div class="">
+                <input class="form-check-input" type="radio" name="payment" id="flexRadioDefault1" value="所有學生" checked>
+                <label class="form-check-label" for="flexRadioDefault1">所有學生</label>
+            </div>
+
+            <div class="">
+                <input class="form-check-input payment_filter_radio" type="radio" name="payment" id="flexRadioDefault2" value="已繳費">
+                <label class="form-check-label" for="flexRadioDefault2">已繳費</label>
+            </div>
+
+            <div class="">
+                <input class="form-check-input" type="radio" name="payment" id="flexRadioDefault3" value="未繳費">
+                <label class="form-check-label" for="flexRadioDefault3">未繳費</label>
+            </div>
+        </div>
+
+        <div class="col-2">
+            {% if session.login %}
+                {% if session.permission == 1 %}
+                    <a href="{% url 'add_student' %}" class="btn btn-success">新增學生</a>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <div class="col-2 ">
+            <div class="">
+                <input type="text" id="searchInput" placeholder="搜索學生" class="form-control">
+            </div>
+        </div>
+    </div>
+
+    {% load custom_filters %}
+    <table class="student_list">
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>年級</th>
+                <th>學校</th>
+                <th>備注</th>
+                <th>繳費</th>
+                <th>詳情</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in student_list %}
+                    <tr class="student">
+                        <td class="name bold">
+                            <a class="title" href="{% url 'student_detail' sid=i.sid %}" target="_blank">
+                                {{ i.name }}
+                            </a>
+                        </td>
+                        <td class="years_old">
+                            {% if i.years_old < 50 %}
+                                {{ tingkat|get_item:i.years_old }}
+                            {% else %}
+                                {{ tingkat_tiada|get_item:i.years_old }}
+                            {% endif %}
+
+                        </td>
+                        <td class="school">{{ i.school }}</td>
+                        <td class="remark">{{ i.remarks }}</td>
+                        <td class="payment">
+                            {% if i.fully_paid == 1 %}
+                                <span style="color:Green" class="sudah">&#10004;</span>
+                            {% else %}
+                                 <span style="color:Red" class="belum">X</span>
+                            {% endif %}
+                        </td>
+                        <td class="detail">
+                            <a href="{% url 'student_detail' sid=i.sid %}" target="_blank">
+                                <img class="new_window" src="{% static '/img/new_window.png' %}" alt="新頁面">
+                            </a>
+                        </td>
+                    </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+</body>
+
+<script>
+document.getElementByid('searchInput').addEventListener('keyup', function() {
+    var searchValue = this.value.toLowerCase();
+    var paragraphs = document.getElementsByClassName('student');
+    {#var br= document.getElementsByClassName('break_of_checkbox')#}
+
+    console.log(paragraphs.length)
+
+    for (var i = 0; i < paragraphs.length; i++) {
+        var text = paragraphs[i].innerText.toLowerCase();
+
+        if (text.includes(searchValue)) {
+            paragraphs[i].style.display = 'table-row';
+            {#br[i].style.display = 'block';#}
+        } else {
+            paragraphs[i].style.display = 'none';
+            {#br[i].style.display = 'none';#}
+
+        }
+    }
+});
+</script>
+
+</html>

@@ -1,0 +1,49 @@
+.file_verify{
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 20px;
+    /*width: 450px;*/
+}
+
+.file_verify input{
+    width: 200px;
+}
+.file_verify div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.file_verify button{
+    margin-bottom: 20px;
+    width: 150px;
+    height: 50px;
+    border-radius: 10%;
+    background-color: #007bff;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    border: 2px solid #0056b3;
+}
+
+.file_verify button:hover {
+    background-color: #0056b3;
+}
+
+.file_verify h1{
+    margin-top: 20px;
+}
+
+.file_verify label{
+    font-size: 18px;
+}
+.success{
+    color: green;
+    font-size: 18px;
+}
+.fail{
+    color: red;
+    font-size: 18px;
+}

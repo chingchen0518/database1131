@@ -1,0 +1,197 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+
+    <link href= "{%static '/css/student_detail.css' %}" type="text/css" rel="stylesheet"/>
+    <script src="{% static 'js/student_detail.js' %}"></script>
+
+    <meta charset="UTF-8">
+    <title>{{ student_detail.name }}</title>
+
+</head>
+<body>
+    {% include 'elements/navbar.html' %}
+    <h1 id="title" style="margin-top:100px;">{{ student_detail.name }}</h1>
+
+    <div class="accordion">
+
+
+        <input type="checkbox" id="info" class="accordion-input" checked/>
+        <label for="info" class="accordion-buttons active fs-5"><span class="arrow">&#9660; </span>學生資訊</label>
+        <div class="accordion-content" >
+            <div id="student_information">
+                <table>
+                <tbody>
+                    <tr>
+                        <td class="bold">編號</td>
+                        <td>{{ student_detail.sid }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="bold">年級</td>
+                        <td>
+                            {% if student_detail.years_old < 50 %}
+                                {{ tingkat|get_item:student_detail.years_old }}
+                            {% else %}
+                                {{ tingkat_tiada|get_item:student_detail.years_old }}
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="bold">電話號碼</td>
+                        <td>{{ student_detail.hp }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="bold">家長姓名</td>
+                        <td>{{ student_detail.parent_name }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="bold">家長電話號碼</td>
+                        <td>{{ student_detail.parent_hp }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="bold">學校</td>
+                        <td>{{ student_detail.school }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="bold">生日日期</td>
+                        <td>{{ student_detail.birthday|date:"Y年n月j日" }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="bold">備注</td>
+                        <td>{{ student_detail.remarks }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="bold">地址</td>
+                        <td>{{ student_detail.address }}</td>
+                    </tr>
+                </tbody>
+            </table>
+                {% if session.login %}
+                    {% if session.permission == 1 %}
+                        <a class="btn btn-primary" id="edit_btn" href="{% url 'edit_student' sid=student_detail.sid %}">編輯資料</a>
+                        <a data-toggle="modal" data-target="#deleteConfirmModal" class="btn btn-danger" data-class-id="{{ student_detail.sid }}">刪除</a>
+
+{#                        <a class="btn btn-danger" id="delete_student_action" href="{% url 'delete_student_action' sid=student_detail.sid %}">編輯資料</a>#}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <input type="checkbox" id="courses" class="accordion-input" checked/>
+        <label for="courses" class="accordion-buttons active fs-5"><span class="arrow">&#9660; </span>參與的課程</label>
+        <div class="accordion-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>課名</th>
+                        <th>年度</th>
+                        <th>時間</th>
+                        <th>學習狀況</th>
+                        <th>期數</th>
+                        <th>繳費</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for i in class_taken %}
+                        <tr>
+                            <td class="classname bold">
+                                <a class="class_title" href="{% url 'class_detail' cid=i.cid %}">
+                                    {{ i.category }}
+                                    {% if i.subject%}
+                                        - {{ i.subject }}
+                                    {% endif %}
+                                </a>
+                            </td>
+                            <td class="year">{{ i.year }}</td>
+                            <td class="time">星期{{ i.day }}   {{ i.time }}</td>
+                            <td class="remark">{{ i.remark }}</td>
+                            <td class="period">{{ i.period }}</td>
+                            <td class="payment">
+                                {% if i.payment >= i.period %}
+                                    <span style="color:Green">&#10004;</span>
+                                {% else %}
+
+
+                                    {% if session.login %}
+                                        {% if session.permission == 1 %}
+                                            <a href="{% url 'upload_payment' eid=i.eid %}" style="color:Red">X</a>
+                                        {% else %}
+                                            <span style="color:Red">X</span>
+                                        {% endif %}
+                                    {% else %}
+                                            <span style="color:Red">X</span>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+</div>
+
+    <!--刪除確認欄-->
+    <div class="modal" id="deleteConfirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">確定要刪除嗎</div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" id="delete_no" data-dismiss="modal">保留</button>
+                    <a id="delete_yes_link" href="" class="btn btn-danger">確認刪除</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+  <script src="{% static '/plugins/jQuery/jquery.min.js' %}"></script>
+{#  <!-- Bootstrap jQuery -->#}
+  <script src="{% static '/plugins/bootstrap/bootstrap.min.js' %}" defer></script>
+{#  <!-- Slick Carousel -->#}
+  <script src="{% static '/plugins/slick/slick.min.js' %}"></script>
+  <script src="{% static 'plugins/slick/slick-animation.min.js'%}"></script>
+  <!-- Color box -->
+  <script src="{% static '/plugins/colorbox/jquery.colorbox.js' %}"></script>
+  <!-- shuffle -->
+  <script src="{% static '/plugins/shuffle/shuffle.min.js' %}" defer></script>
+    <script>
+        $(document).ready(function(){
+            // 监听删除按钮的点击事件
+            $('#delete_yes').click(function(){
+                // 显示模态框
+                $('#deleteConfirmModal').modal('show');
+            });
+        });
+
+        $(document).ready(function() {
+            // 当模态框中的移除按钮被点击时
+            $('#deleteConfirmModal').on('show.bs.modal', function(e) {
+
+                var sid = $(e.relatedTarget).data('class-id'); // 获取按钮上的 data-student-id 值
+                var deleteUrl = '{% url "delete_student_action" sid=0 %}'; // 0 这里只是一个占位符，实际不会用到
+                deleteUrl = deleteUrl.replace('0', sid); // 替换占位符为实际的 studentid
+                $('#delete_yes_link').attr('href', deleteUrl); // 设置确认删除按钮的 href 属性
+            });
+        });
+    </script>

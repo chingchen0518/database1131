@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>學期結轉</title>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/bootstrap_css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body style="margin:2%;">
+    {% include 'elements/navbar.html' %}
+
+    <h1 style="margin-top:100px;">目前學期：{{ years.semText }}</h1>
+
+
+    <form action="{% url 'sem_convert_action' %}" method="POST" onsubmit="return confirmSubmission()">
+        {% csrf_token %}
+    
+        {% if years.sem == 1 %}
+            <h1>結轉至：{{ years.real_year}}寒</h1>
+
+            {% with value1=years.semid value2=1 %}
+                {% with result=value1|add:value2 %}
+                     <input name="next_sem" class="d-none" type="text" value="{{ result }}">
+                {% endwith %}
+            {% endwith %}
+        {% elif  years.sem == 2%}
+            <h1>結轉至：{{ years.real_year}}下</h1>
+            {% with value1=years.semid value2=1 %}
+                {% with result=value1|add:value2 %}
+                     <input name="next_sem" class="d-none" type="text" value="{{ result }}">
+                {% endwith %}
+            {% endwith %}
+        {% elif  years.sem == 3%}
+            <h1>結轉至：{{ years.real_year}}暑</h1>
+            {% with value1=years.semid value2=1 %}
+                {% with result=value1|add:value2 %}
+                     <input name="next_sem" class="d-none" type="text" value="{{ result }}">
+                {% endwith %}
+            {% endwith %}
+        {% elif years.sem == 4%}
+            <h1>結轉至：{% with value1=years.real_year value2=1 %}
+                {% with result=value1|add:value2 %}
+                    {{ result }}
+                {% endwith %}
+            {% endwith %}上</h1>
+
+            {% with value1=years.semid value2=7 %}
+                {% with result=value1|add:value2 %}
+                     <input name="next_sem" class="d-none" type="text" value="{{ result }}">
+                {% endwith %}
+            {% endwith %}
+        {% endif %}
+
+        <input type="submit" class="btn btn-primary" value="結轉學期">
+    </form>
+
+    <br>
+
+</body>
+
+<script>
+function confirmSubmission() {
+    const userInput = prompt("請輸入'convert'確認進行學期結轉");
+    if (userInput === 'convert') {
+        return true; // 允许提交表单
+    } else {
+        alert("學期結轉取消，請輸入'convert'以確認結轉");
+        return false; // 阻止提交表单
+    }
+}
+</script>
+
+</html>

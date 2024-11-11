@@ -1,0 +1,21 @@
+body {
+    background-color: #f8f8f8; /* 背景色為非常淺的灰色，增強對比 */
+    color: #333; /* 文字顏色為深灰色，增強可讀性 */
+    font-family: Arial, sans-serif; /* 設置字體 */
+    padding:10px;
+}
+
+.student_list{
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.student_name{
+    font-size: large;
+    margin:15px;
+}
+
+input[type="checkbox"] {
+    transform: scale(2); /* 1.5 倍大小 */
+    margin:3px;
+}

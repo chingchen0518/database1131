@@ -1,0 +1,17 @@
+*.sqlite3
+my_app/static/img/receipt/*
+my_app/migrations/*
+my_app/__pycache__/*
+__pycache__/
+*.pyc
+*.pyo
+
+*/migrations/*.py
+!*/migrations/__init__.py
+venv/*
+opendjango.exe
+*.log
+.vscode/
+.idea/
+*.swp
+*.swo

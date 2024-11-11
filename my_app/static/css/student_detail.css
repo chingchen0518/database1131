@@ -1,0 +1,149 @@
+.bold{
+    font-weight: bold;
+}
+
+body {
+    background-color: #ffffff; /* 白色背景 */
+    color: #000000; /* 黑色文字 */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333333; /* 深灰色標題 */
+}
+
+h2{
+    background-color: black;
+    color:white;
+    border-radius:5px;
+    padding:10px;
+}
+table {
+    border-collapse: collapse;
+    margin: 20px;
+}
+
+table td {
+    border: 1px solid #000000; /* 黑色邊框 */
+    border-radius:5px;
+    padding: 10px;
+}
+
+
+table td.bold {
+    font-weight: bold;
+    background-color: #f2f2f2; /* 浅灰色背景 */
+}
+
+table td:nth-child(even) {
+    background-color: #ffffff; /* 白色背景 */
+}
+
+table td:nth-child(odd) {
+    background-color: #f2f2f2; /* 浅灰色背景 */
+}
+
+table tr:hover td {
+    background-color: #cccccc; /* 悬停时的深灰色背景 */
+}
+
+th {
+    background-color: #646161; /* Black background for headers */
+    color: #ffffff; /* White text for headers */
+    text-align: center;
+    border: 1px solid #000000;
+    padding: 10px;
+}
+
+/*accordion*/
+
+.accordion-buttons {
+    display: block;
+    background-color: black	; /* 深灰色背景 */
+    color: #ffffff; /* 白色文字 */
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+    margin: 10px;
+    margin-bottom: 0px;
+}
+
+.accordion-buttons:hover {
+    background-color: #555555; /* 悬停时的颜色 */
+}
+
+.accordion-buttons.active {
+    background-color: #555555; /* 激活状态的颜色 */
+}
+
+#student_information{
+    display: flex;
+    flex-direction: column;
+}
+
+#edit_btn{
+    margin:10px;
+}
+
+.accordion-content {
+    display: none;
+    overflow: hidden;
+    background-color: white; /* 浅灰色背景 */
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    margin:10px;
+    margin-top: 0px;
+}
+
+.accordion-input {
+    display: none;
+}
+
+.accordion-input:checked + .accordion-buttons + .accordion-content {
+    display: block;
+}
+
+.classname{
+    width:20%;
+}
+
+.class_title{
+    text-decoration: underline;
+    color: black;
+}
+
+.class_title:hover{
+    text-decoration: underline;
+    color: Blue;
+}
+
+.year{
+    width:5%;
+    text-align: center;
+}
+
+.period{
+    width:5%;
+    text-align: center;
+}
+
+.payment{
+    width:5%;
+    text-align: center;
+}
+
+.time{
+    width:15%
+}
+
+.remark{
+    width:50%
+}
+
