@@ -34,7 +34,6 @@ class Class(models.Model):
 
     class Meta:
         db_table = 'class'
-#
 class Students(models.Model):
     sid = models.AutoField(primary_key=True)
     name = models.CharField(default="-", null=False, max_length=20)
@@ -67,8 +66,8 @@ class Category(models.Model):
 
 class Payment(models.Model):
     eid=models.ForeignKey(Enrolled, on_delete=models.CASCADE, to_field='eid', auto_created=False, unique=False, default=0)
-    sid=models.ForeignKey(Students, on_delete=models.CASCADE, to_field='sid', auto_created=False, unique=False, default=0)
-    cid=models.ForeignKey(Class, on_delete=models.CASCADE, to_field='cid', auto_created=False, unique=False, default=0)
+    # sid=models.ForeignKey(Students, on_delete=models.CASCADE, to_field='sid', auto_created=False, unique=False, default=0)
+    # cid=models.ForeignKey(Class, on_delete=models.CASCADE, to_field='cid', auto_created=False, unique=False, default=0)
     amount=models.IntegerField(default=0)
     date=models.DateField(null=True,blank=True)
     class Meta:
@@ -83,7 +82,7 @@ class Semester(models.Model):
         db_table = 'semester'
 
 class Time(models.Model):
-    tid=models.AutoField(primary_key=True)
+    time_id=models.AutoField(primary_key=True)
     semid=models.ForeignKey(Semester, on_delete=models.CASCADE, to_field='semid', auto_created=False, unique=False, default=0)
     start=models.TimeField(null=True,blank=True)
     end=models.TimeField(null=True,blank=True)

@@ -58,13 +58,13 @@ def student_detail(request,sid):
     student_detail = Students.objects.raw('''SELECT * FROM Students WHERE sid=%s''',[sid])
     class_taken= Class.objects.raw('''SELECT year,eid,cid,day,time,remark,period,subject,category,Enrolled.cid_id,
                                         CASE
-                                            WHEN (SELECT COUNT(amount) AS payment FROM Payment WHERE sid_id=%s AND Payment.eid_id=Enrolled.eid) > 0 THEN (SELECT COUNT(amount) FROM Payment WHERE sid_id=%s AND Payment.eid_id=Enrolled.eid)
+                                            WHEN (SELECT COUNT(amount) AS payment FROM Payment WHERE sid_id=%s AND Payment.eid_id=Enrolled.eid) > 0 THEN (SELECT COUNT(amount) FROM Payment WHERE Payment.eid_id=Enrolled.eid)
                                             ELSE 0
                                         END AS payment
                                         FROM Enrolled
                                         JOIN Class ON Class.cid = Enrolled.cid_id
                                         WHERE Enrolled.sid_id = %s
-                                        ''',(sid,sid,sid))
+                                        ''',(sid,sid))
 
     tingkat_ada_convert = ['xxx', '國小一', '國小二', '國小三', '國小四', '國小五', '國小六', '國一', '國二', '國三',
                            '高一', '高二', '高三']
@@ -395,7 +395,7 @@ def upload_payment_action(request,eid,sid,cid):
 
         # 看這堂課有幾個payment
         with connection.cursor() as cursor:
-            cursor.execute('SELECT COUNT(amount) AS num FROM Payment WHERE Payment.sid_id=%s AND Payment.eid_id=%s',(sid,eid))
+            cursor.execute('SELECT COUNT(amount) AS num FROM Payment WHERE Payment.eid_id=%s',[eid])
             latest_payment = cursor.fetchall()
             latest_payment = latest_payment[0][0]+1
 
@@ -421,7 +421,7 @@ def upload_payment_action(request,eid,sid,cid):
                 destination.write(chunk)
 
         with connection.cursor() as cursor:
-            cursor.execute('INSERT INTO Payment (eid_id,cid_id,sid_id,date,amount) VALUES  (%s,%s,%s,%s,%s)', (eid, cid, sid,date,amount))
+            cursor.execute('INSERT INTO Payment (eid_id,date,amount) VALUES  (%s,%s,%s)', (eid,date,amount))
 
     previous_page = f'/student_detail/{sid}'
     return redirect(previous_page)#back to homepage
@@ -518,18 +518,18 @@ def add_time_action(request,years):
     next_sequence = 1
 
 
-    latest_timeid = Time.objects.raw('SELECT * FROM Time ORDER BY tid DESC')[0]
-    next_timeid = latest_timeid.tid+1
+    latest_timeid = Time.objects.raw('SELECT * FROM Time ORDER BY time_id DESC')[0]
+    next_timeid = latest_timeid.time_id+1
 
     with connection.cursor() as cursor:
-        cursor.execute('INSERT INTO Time (tid, start, sequence, semid_id, "end") VALUES (%s, %s, %s, %s, %s)',(next_timeid,start,next_sequence,years,end))
+        cursor.execute('INSERT INTO Time (time_id, start, sequence, semid_id, "end") VALUES (%s, %s, %s, %s, %s)',(next_timeid,start,next_sequence,years,end))
 
     add_time=f'/add_time'
     return redirect(add_time)#back to homepage
 
 def delete_time_action(request,tid):
 
-    Time.objects.filter(tid=tid).delete()
+    Time.objects.filter(time_id=tid).delete()
 
     add_time=f'/add_time'
     return redirect(add_time)#back to homepage

@@ -26,7 +26,7 @@
             {% for i in time %}
                 <div class=" m-3">
                     <span class="bg-success text-white p-2 border border-success rounded fw-bold">{{ i.start |date:"H:i" }} - {{ i.end |date:"H:i" }}</span>
-                    <a class="fw-bold p-t-2" href="{% url 'delete_time_action' i.tid %}" style="text-decoration: none; color:red; font-size:1em">X</a>
+                    <a class="fw-bold p-t-2" href="{% url 'delete_time_action' i.time_id %}" style="text-decoration: none; color:red; font-size:1em">X</a>
                 </div>
 
             {% endfor %}
