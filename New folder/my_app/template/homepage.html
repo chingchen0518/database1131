@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>補習班時間表</title>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/bootstrap_css/bootstrap.min.css" rel="stylesheet">
+    <link href= "{%static '/css/homepage.css' %}" type="text/css" rel="stylesheet"/>
+
+</head>
+<body>
+<p>123</p>
+    {% include 'elements/navbar.html' %}
+    <h1 id="title">補習班首頁</h1>
+    <table id="timetable" class="table table-bordered">
+{#        <thead>#}
+{#        <tr>#}
+{#          <th scope="col" class="fs-4 text-center bg-light"> </th>#}
+{#          <th scope="col" class="fs-4 text-center bg-light">時間</th>#}
+{##}
+{#          <th scope="col" class="fs-4 text-center bg-light">教室1</th>#}
+{#          <th scope="col" class="fs-4 text-center bg-light">教室2</th>#}
+{#          <th scope="col" class="fs-4 text-center bg-light">教室3</th>#}
+{#          <th scope="col" class="fs-4 text-center bg-light">教室4</th>#}
+{#          <th scope="col" class="fs-4 text-center bg-light">教室5</th>#}
+{#          <th scope="col" class="fs-4 text-center bg-light">教室6</th>#}
+{#        </tr>#}
+{#      </thead>#}
+      <tbody>
+        {% for days in Days %}
+            <tr>
+                <td colspan="7" class="fs-4 text-center bg-secondary">星期{{ days }}</td>
+            </tr>
+            <tr>
+              <th scope="col" class="fs-4 text-center bg-light">時間</th>
+              <th scope="col" class="fs-4 text-center bg-light">教室1</th>
+              <th scope="col" class="fs-4 text-center bg-light">教室2</th>
+              <th scope="col" class="fs-4 text-center bg-light">教室3</th>
+              <th scope="col" class="fs-4 text-center bg-light">教室4</th>
+              <th scope="col" class="fs-4 text-center bg-light">教室5</th>
+              <th scope="col" class="fs-4 text-center bg-light">教室6</th>
+            </tr>
+
+              {% for t in time %}
+                <tr>
+                    <td class="fw-bold text-center align-middle">{{ t.start|date:"H:i" }}
+                        <br> -
+                        <br>{{ t.end|date:"H:i" }}</td>
+                    {% for kira in classroom %}
+                        <td>
+                            {% for i in class %}
+                                {% if i.time == t.start and i.day == days and i.crid_id == kira %}
+                                    <p class="every_class">
+                                        <span class="tag bg-primary text-white p-1 border border-primary rounded">{{ i.years_old }}</span>
+                                        <a class="class_title" href="{% url 'class_detail' cid=i.cid %}">
+                                            {{ i.category }} <br> - {{ i.subject }}
+                                        </a>
+                                    </p>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+              {% endfor %}
+
+      {% endfor %}
+      </tbody>
+    </table>
+
+</body>
+</html>

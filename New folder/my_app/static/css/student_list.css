@@ -1,0 +1,151 @@
+/* student_list.css */
+
+.bold{
+    font-weight: bold;
+}
+
+body {
+    background-color: #ffffff; /* White background */
+    color: #000000; /* Black text color */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+#title{
+    margin-top:100px;
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 20px;
+    color: #333;
+}
+
+#gradeFilter {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+#gradeFilter:hover, #gradeFilter:focus {
+    border-color: #666;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+#gradeFilter option {
+    background-color: #fff;
+    color: #333;
+    padding: 10px;
+}
+
+#gradeFilter option:hover, #gradeFilter option:focus {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+option{
+    font-size:20px;
+}
+
+option:hover{
+    background-color: black;
+}
+
+#select_by_age{
+    margin:10px;
+}
+
+table.student_list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table.student_list th, table.student_list td {
+    border: 1px solid #000000; /* Black border */
+    padding: 10px;
+}
+
+table.student_list th {
+    background-color: #646161; /* Black background for headers */
+    color: #ffffff; /* White text for headers */
+    text-align: center;
+}
+
+table.student_list tr:nth-child(even) {
+    background-color: #f2f2f2; /* Light grey for even rows */
+}
+
+table.student_list tr:hover {
+    background-color: #cccccc; /* Darker grey for hover effect */
+}
+
+.remark {
+    width: 35%; /* Set your desired maximum width here */
+    word-wrap: break-word; /* Ensures that long words will break to fit the width */
+    white-space: normal; /* Allows text to wrap to the next line */
+    overflow: hidden; /* 确保内容不溢出 */
+
+}
+
+.school {
+    width: 15%; /* Set your desired maximum width here */
+    word-wrap: break-word; /* Ensures that long words will break to fit the width */
+    white-space: normal; /* Allows text to wrap to the next line */
+}
+
+.years_old,.name{
+    width: 10%;
+    text-align: center;
+}
+
+.new_window{
+    height:50%;
+    width:50%;
+    opacity: 0.6;
+}
+
+.new_window:hover{
+    cursor: pointer;
+    opacity: 1;
+}
+
+.title{
+    text-decoration: underline;
+    color: Black;
+}
+
+.payment{
+    width: 5%;
+    text-align: center;
+}
+
+.detail{
+    width: 5%;
+    text-align: center;
+}
+
+.title:hover{
+    color: #0808cb;
+}
+
+
+#toolbar{
+    margin-bottom:10px;
+}
+
+.payment_filter{
+    margin:10px;
+    display:flex;
+    justify-content: space-around;
+}
+

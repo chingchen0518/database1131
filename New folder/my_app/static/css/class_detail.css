@@ -1,0 +1,165 @@
+/* class_detail.css */
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f8f8;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.table-container {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #333;
+    color: #333;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Category and Subject */
+.category {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.subject {
+    font-size: 20px;
+    color: #6c757d;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .category {
+        font-size: 22px;
+    }
+
+    .subject {
+        font-size: 18px;
+    }
+}
+
+
+
+table td {
+    border: 1px solid #000000; /* 黑色邊框 */
+    border-radius:5px;
+    padding: 10px;
+}
+
+
+table td.bold {
+    font-weight: bold;
+    background-color: #f2f2f2; /* 浅灰色背景 */
+}
+
+table td:nth-child(even) {
+    background-color: #ffffff; /* 白色背景 */
+}
+
+table td:nth-child(odd) {
+    background-color: #f2f2f2; /* 浅灰色背景 */
+}
+
+table tr:hover td {
+    background-color: #cccccc; /* 悬停时的深灰色背景 */
+}
+
+th {
+    background-color: #646161; /* Black background for headers */
+    color: #ffffff; /* White text for headers */
+    text-align: center;
+    border: 1px solid #000000;
+    padding: 10px;
+}
+
+.remark{
+    width:80%;
+}
+
+.student_name{
+    text-align: center;
+}
+
+#student_list{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#add_enroll{
+    margin:5px;
+    font-size: 25px;
+    margin-left: auto;
+}

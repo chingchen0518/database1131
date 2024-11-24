@@ -1,0 +1,156 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新增課堂類別</title>
+  <!-- 引入 Bootstrap CSS -->
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+
+  <!-- 自定义样式 -->
+  <style>
+    body {
+        background-color: #f8f8f8;
+    }
+
+    #title{
+        margin-top:100px;
+    }
+  </style>
+</head>
+
+<body>
+    {% include 'elements/navbar.html' %}
+
+    <div class="container">
+      <!-- 本頁面標題 -->
+      <h1 id="title">新增課堂類別</h1>
+
+        <div class="d-flex flex-wrap">
+            {% for i in category %}
+                <div class=" m-3">
+                    <span class="bg-success text-white p-2 border border-success rounded fw-bold">{{ i.category}}</span>
+                    <a class="fw-bold p-t-2" href="{% url 'delete_category_action' i.catid %}" style="text-decoration: none; color:red; font-size:1.5em">X</a>
+
+                </div>
+            {% endfor %}
+        </div>
+
+      <form id="add_category" method="POST" action="{% url 'add_category_action' %}">
+          {% csrf_token %}
+
+        <div class="accordion" id="accordion">
+          <div class="accordion-item">
+
+            <!-- 簡介(下拉式列表) -->
+            <h2 class="accordion-header" id="introduction-heading">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#introduction" aria-expanded="true" aria-controls="introduction">
+                課堂類別
+              </button>
+            </h2>
+            <div id="introduction" class="accordion-collapse collapse show" aria-labelledby="introduction-heading" data-bs-parent="#accordion">
+              <div class="accordion-body">
+
+                <div class="mb-3 row">
+                  <div class="col-4">
+                    <label for="category" class="form-label">課堂類別名稱：</label>
+                    <input type="text" class="form-control" id="category" name="category" required>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+            <!-- 上傳表單按鈕 -->
+        <div class="d-flex justify-content-center mt-3">
+          <input type="submit" class="btn btn-primary" value="新增">
+        </div>
+      </form>
+    </div>
+
+    <div class="modal" id="deleteConfirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">確定要刪除嗎</div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" id="delete_no" data-dismiss="modal">保留</button>
+                    <a id="delete_yes_link" href=""><button class="btn btn-danger" id="delete_yes">確認刪除</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- 引入 Bootstrap JS -->
+<script src="../static/js/bootstrap_js/bootstrap.min.js"></script>
+
+  <script src="{% static '/plugins/jQuery/jquery.min.js' %}"></script>
+{#  <!-- Bootstrap jQuery -->#}
+  <script src="{% static '/plugins/bootstrap/bootstrap.min.js' %}" defer></script>
+{#  <!-- Slick Carousel -->#}
+  <script src="{% static '/plugins/slick/slick.min.js' %}"></script>
+  <script src="{% static 'plugins/slick/slick-animation.min.js'%}"></script>
+  <!-- Color box -->
+  <script src="{% static '/plugins/colorbox/jquery.colorbox.js' %}"></script>
+  <!-- shuffle -->
+  <script src="{% static '/plugins/shuffle/shuffle.min.js' %}" defer></script>
+<script src="../static/js/bootstrap_js/bootstrap.min.js"></script>
+<!-- 自定义表单验证 -->
+<script>
+  function validateForm() {
+    var form = document.getElementByid("add_class");
+    var inputs = form.querySelectorAll("input, select");
+    var isValid = true;
+    var isAlerted = false; // 變數來追蹤是否已經顯示了提示訊息
+    var unfilledFields = ""; // 變數來儲存未填寫欄位
+
+    inputs.forEach(function(input) {
+      var message = input.previousElementSibling.dataset.message;
+
+      if (input.required && !input.value.trim()) {
+        isValid = false;
+        input.classList.add("required-field");
+        if (!isAlerted) {
+          isAlerted = true;
+          unfilledFields += `${message}, `;
+        }
+      }
+    });
+
+    if (isValid) {
+      alert("表單已成功提交！");
+    } else {
+      alert("請填寫所有欄位，未填欄位為: " + unfilledFields.slice(0, -2));
+    }
+  }
+
+{#$(document).ready(function(){#}
+{#        // 监听删除按钮的点击事件#}
+{#        $('#delete_yes').click(function(){#}
+{#            // 显示模态框#}
+{#            $('#deleteConfirmModal').modal('show');#}
+{#        });#}
+{#    });#}
+{##}
+{#  $(document).ready(function() {#}
+{#            // 当模态框中的移除按钮被点击时#}
+{#            $('#deleteConfirmModal').on('show.bs.modal', function(e) {#}
+                {#element = document.getElementByid('delete_button');#}
+                {#const catid = element.dataset.classid;#}
+{#                var catid = $(e.relatedTarget).data('class-id'); // 获取按钮上的 data-student-id 值#}
+{##}
+{#                var deleteUrl = '{% url "delete_category_action" catid=0 %}'; // 0 这里只是一个占位符，实际不会用到#}
+{#                deleteUrl = deleteUrl.replace('0', catid); // 替换占位符为实际的 studentid#}
+{#                $('#delete_yes_link').attr('href', deleteUrl); // 设置确认删除按钮的 href 属性#}
+{#            });#}
+{#        });#}
+  {##}
+</script>
+</body>
+</html>

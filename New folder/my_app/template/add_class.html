@@ -1,0 +1,219 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新增課程</title>
+  <!-- 引入 Bootstrap CSS -->
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+
+  <!-- 自定义样式 -->
+  <style>
+    body {
+        background-color: #f8f8f8;
+    }
+
+    #title{
+        margin-top:100px;
+    }
+  </style>
+</head>
+
+<body>
+    {% include 'elements/navbar.html' %}
+
+<div class="container">
+  <!-- 本頁面標題 -->
+  <h1 id="title">新增課程</h1>
+
+  <form id="add_class" method="POST" action="{% url 'add_class_action' %}">
+      {% csrf_token %}
+
+    <div class="accordion" id="accordion">
+      <div class="accordion-item">
+
+        <!-- 簡介(下拉式列表) -->
+        <h2 class="accordion-header" id="introduction-heading">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#introduction" aria-expanded="true" aria-controls="introduction">
+            課程資訊
+          </button>
+        </h2>
+        <div id="introduction" class="accordion-collapse collapse show" aria-labelledby="introduction-heading" data-bs-parent="#accordion">
+          <div class="accordion-body">
+
+
+            <!-- 類别、科目、年級 -->
+            <div class="mb-3 row">
+              <div class="col-4">
+                <label for="category" class="form-label">類别：</label>
+                <select name="category" id="category" class="form-select" required>
+                    <option value="" disabled selected>請選擇類別</option>
+                    {% for category in categories %}
+                        <option value="{{ category.category }}">{{ category.category }}</option>
+                    {% endfor %}
+                </select>
+                <span class="text-danger d-none">類别不能为空</span>
+              </div>
+
+              <div class="col-4">
+                <label for="age" class="form-label">科目名稱：</label>
+                <input type="text" class="form-control" id="subject" name="subject" required>
+              </div>
+
+              <div class="col-4">
+                <label for="tingkat" class="form-label">年級：</label>
+                    <select id="age" name="age" class="form-select" required>
+                        <option value="" disabled>全部</option>
+                        <option value="兒美小">兒美小</option>
+                        <option value="兒美中">兒美中</option>
+                        <option value="兒美大">兒美大</option>
+                        <option value="國小一">國小一</option>
+                        <option value="國小二">國小二</option>
+                        <option value="國小三">國小三</option>
+                        <option value="國小四">國小四</option>
+                        <option value="國小五">國小五</option>
+                        <option value="國小六">國小六</option>
+                        <option value="國一">國一</option>
+                        <option value="國二">國二</option>
+                        <option value="國三">國三</option>
+                        <option value="高一">高一</option>
+                        <option value="高二">高二</option>
+                        <option value="高三">高三</option>
+                        <option value="留學">留學</option>
+                        <option value="社會人士">社會人士</option>
+                        <option value="其他">其他</option>
+                    </select>
+              </div>
+            </div>
+
+            <!-- 年份、星期幾、時間 -->
+            <div class="mb-3 row">
+               <!-- 年度 -->
+              <div class="col-2">
+                <label for="year" class="form-label">年度：</label>
+                <input type="text" class="form-control" value="{{ years.semText }}" readonly>
+                <input style="display:none;" type="number" id="year" class="form-control" name="year" placeholder="年度" value="{{ years.semid }}" readonly>
+
+              </div>
+
+
+              <!-- 星期幾 -->
+              <div class="col-3">
+                <label for="day" class="form-label">星期幾</label>
+                <select name="day" id="day" class="form-select" required>
+                  <option value="" disabled selected>星期__</option>
+                  <option value="一">一</option>
+                  <option value="二">二</option>
+                  <option value="三">三</option>
+                  <option value="四">四</option>
+                  <option value="五">五</option>
+                  <option value="六">六</option>
+                  <option value="日">日</option>
+                </select>
+              </div>
+
+                <!-- 時間 -->
+              <div class="col-3">
+                <label for="time" class="form-label" >時間</label>
+{#                <div class="custom-select">#}
+                  <select class="form-select" name="time" required id="time">
+                      <option value="" disabled selected>選擇時間</option>
+                      {% for i in time %}
+                            <option value="{{ i.start |date:"H:i" }}">{{ i.start |date:"H:i" }} - {{ i.end |date:"H:i" }}</option>
+                      {% endfor %}
+
+                  </select>
+{#                </div>#}
+              </div>
+
+              <div class="col-2">
+                <label for="quota" class="form-label">名額：</label>
+                <input type="number" id="quota" class="form-control" name="quota" placeholder="名額" max="99" required>
+              </div>
+
+              <div class="col-2">
+                <label for="class_period" class="form-label">期數：</label>
+                <input type="number" id="class_period" class="form-control" name="class_period" placeholder="期數" max="5" required>
+              </div>
+
+            </div>
+            <!-- 教室、老師 -->
+            <div class="mb-3 row">
+              <div class="col-6">
+                <label for="classroom" class="form-label">教室：</label>
+                <select name="classroom" id="classroom" class="form-select" required>
+                    <option value="" disabled selected>選擇教室</option>
+                    {% for classroom in classrooms %}
+                        <option value="{{ classroom.crid }}">{{ classroom.classroom_name }}</option>
+                    {% endfor %}
+                </select>
+
+
+              </div>
+              <div class="col-6">
+                <label for="teacher" class="form-label" required>老師：</label>
+                <select name="teacher" id="teacher" class="form-select">
+                    <option value="" disabled selected>選擇老師</option>
+                    {% for teacher in teachers %}
+                        <option value="{{ teacher.tid }}">{{ teacher.teacher_name }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- 上傳表單按鈕 -->
+    <div class="d-flex justify-content-center mt-3">
+      <input type="submit" class="btn btn-primary" value="新增">
+    </div>
+  </form>
+</div>
+
+<!-- 引入 Bootstrap JS -->
+<script src="../static/js/bootstrap_js/bootstrap.min.js"></script>
+<!-- 自定义表单验证 -->
+<script>
+
+
+  function validateForm() {
+    var form = document.getElementByid("add_class");
+    var inputs = form.querySelectorAll("input, select");
+    var isValid = true;
+    var isAlerted = false; // 變數來追蹤是否已經顯示了提示訊息
+    var unfilledFields = ""; // 變數來儲存未填寫欄位
+
+    inputs.forEach(function(input) {
+      var message = input.previousElementSibling.dataset.message;
+
+      if (input.required && !input.value.trim()) {
+        isValid = false;
+        input.classList.add("required-field");
+        if (!isAlerted) {
+          isAlerted = true;
+          unfilledFields += `${message}, `;
+        }
+      }
+    });
+
+    if (isValid) {
+      alert("表單已成功提交！");
+    } else {
+      alert("請填寫所有欄位，未填欄位為: " + unfilledFields.slice(0, -2));
+    }
+  }
+
+
+</script>
+</body>
+</html>

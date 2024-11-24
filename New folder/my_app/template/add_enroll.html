@@ -1,0 +1,83 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'elements/navbar.html' %}
+
+    <meta charset="UTF-8">
+    <!-- 引入 Bootstrap CSS -->
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+
+    <link href= "{%static '/css/add_enroll.css' %}" type="text/css" rel="stylesheet"/>
+
+    <title>新增學員</title>
+</head>
+
+<body>
+    <div style="margin:20px;">
+        <h2 id="title" style="margin-top:100px;">新增學員</h2>
+        <br/>
+        <form id="add_class" method="POST" action="{% url 'add_enroll_action' cid=cid %}">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="text" id="searchInput" placeholder="輸入學生姓名" class="form-control">
+                </div>
+            </div>
+            <br/>
+
+            <div class="student_list">
+                {% for i in student_list %}
+                    <label class="student_name">
+                      <input type="checkbox" name="student" value="{{ i.sid }}"> {{ i.name }}
+                    </label>
+                    <br class="break_of_checkbox">
+                {% endfor %}
+            </div>
+            <input class="btn btn-primary" type="submit" value="新增學員">
+        </form>
+
+        <h2 id="title" style="margin-top:100px;">刪除舊學員</h2>
+        <form id="add_class" method="POST" action="{% url 'delete_enrolled_student_from_class_detail' cid=cid %}">
+        {% csrf_token %}
+
+
+        <div class="student_list student_enrolled">
+            {% for i in student_enrolled %}
+                <label class="student_name">
+                  <input type="checkbox" name="enrolled_student" value="{{ i.sid }}"> {{ i.name }}
+                </label>
+                <br class="break_of_checkbox">
+            {% endfor %}
+        </div>
+        <input class="btn btn-primary" type="submit" value="刪除學員">
+    </form>
+    </div>
+<script>
+    //search的部分
+document.getElementByid('searchInput').addEventListener('keyup', function() {
+    var searchValue = this.value.toLowerCase();
+    var paragraphs = document.getElementsByTagName('label');
+    var br= document.getElementsByClassName('break_of_checkbox')
+
+    for (var i = 0; i < paragraphs.length; i++) {
+        var text = paragraphs[i].innerText.toLowerCase();
+
+        if (text.includes(searchValue)) {
+            paragraphs[i].style.display = 'block';
+            br[i].style.display = 'block';
+        } else {
+            paragraphs[i].style.display = 'none';
+            br[i].style.display = 'none';
+
+        }
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,115 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <title>Statics</title>
+</head>
+
+<body>
+    {% include 'elements/navbar.html' %}
+
+    <h1 style="margin-top:100px;margin-left:20px;">學生人數統計資料</h1>
+
+    <canvas id="myChart" width="400" height="100"></canvas>
+
+    {{ data|json_script:"data" }}
+
+{#    <<scrip></scrip>t id="data" type="application/json">#}
+{#        {{ data|json_script:"data" }}#}
+{#    </script>#}
+
+<script>
+        {#// 從 <script> 標籤中提取並解析數據#}
+        {#var jsonData = document.getElementById('data').textContent;#}
+        {##}
+        {#// 使用 JSON.parse() 解析 JSON 字符串#}
+        {#var parsedData = JSON.parse(jsonData);#}
+        {##}
+        {#var labels = parsedData.labels;#}
+        {#var data = parsedData.data;#}
+
+        // 1. 提取嵌入的 JSON 數據
+        var jsonData = JSON.parse(document.getElementById('data').textContent);
+
+        // 2. 提取 labels 和 data
+        var ageCount = jsonData.age_count;
+
+        // labels 是年齡段的名稱（中文）
+        var labels = Object.keys(ageCount);  // ["兒美小", "兒美中", ..., "其他"]
+
+        // data 是每個年齡段的人數
+        var data = Object.values(ageCount);  // [0, 0, 0, ..., 0] // 每個年齡段的學生數量
+
+
+        // 繪製圖表
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var ageChart = new Chart(ctx, {
+            type: 'bar',  // 條形圖
+            data: {
+                labels: labels,  // 年齡標籤
+                datasets: [{
+                    label: '學生人數',
+                    data: data,  // 每個年齡段的學生數量
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+            plugins: {
+                    legend: {
+                        display: true,  // 顯示圖例
+                        labels: {
+                            font: {
+                                size: 20,  // 修改 legend 字體大小
+                                family: 'Arial',  // 修改 font-family
+                                weight: 'bold'  // 修改字體粗細
+                            }
+                        }
+                    }
+            },
+        responsive: true,
+        scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: '年級',
+                            font: {size: 20}// 設定字體大小
+                        },
+                        ticks: {
+                                font: {
+                                    size: 20  // y 軸標籤的字體大小
+                                },
+                                beginAtZero: true
+                            }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: '學生人數',
+                            font: {
+                                    size: 20  // y 軸標籤的字體大小
+                                },
+                        },
+                        ticks: {
+                                font: {
+                                    size: 20  // y 軸標籤的字體大小
+                                },
+                                beginAtZero: true,
+                                stepSize: 1         // 設置 Y 軸每個刻度的增量為 1
+
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

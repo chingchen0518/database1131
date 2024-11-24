@@ -1,0 +1,106 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+
+    <link href= "{%static '/css/class_detail.css' %}" type="text/css" rel="stylesheet"/>
+
+    <title>
+        {{ class_detail.category }}
+            {% if class_detail.subject%}
+                - {{ class_detail.subject }}
+            {% endif %}
+    </title>
+
+  <style>
+
+    #title{
+        margin-top:100px;
+    }
+  </style>
+</head>
+<body>
+    {% include 'elements/navbar.html' %}
+
+    <h1 id="title">{{ class_detail.category }}{% if class_detail.subject%}-{{ class_detail.subject }}{% endif %}</h1>
+    <h2>教室：{{ class_detail.classroom_name }}</h2>
+
+    <div id="student_list">
+        <h2>參與學生:</h2>
+        {% if session.login %}
+        <a id="add_enroll" class="btn btn-primary" href="{% url 'add_enroll' cid=class_detail.cid %}">編輯學員</a>
+        {% endif %}
+    </div>
+
+    <table>
+        <tr>
+            <th>學生姓名</th>
+            <th>學習狀況</th>
+            {% if session.login %}
+                <th>編輯</th>
+                <th>移除</th>
+            {% endif %}
+
+        </tr>
+        {% for i in students %}
+            <tr>
+                <td class="student_name">{{ i.name }}</td>
+                <td class="remark">{{ i.remark }}</td>
+                {% if session.login %}
+                    <td><a class="btn btn-primary" href="{% url 'edit_student_status' i.sid class_detail.cid %}">更新</a></td>
+                    <td><button data-toggle="modal" data-target="#deleteConfirmModal" class="btn btn-danger" data-student-id="{{ i.sid }}">移除</button></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+    <!--刪除確認欄-->
+            <div class="modal" id="deleteConfirmModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">確定要刪除嗎</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" id="delete_no" data-dismiss="modal">保留</button>
+                            <a id="delete_yes_link" href=""><button class="btn btn-danger" id="delete_yes">確認刪除</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</body>
+
+  <script src="{% static '/plugins/jQuery/jquery.min.js' %}"></script>
+{#  <!-- Bootstrap jQuery -->#}
+  <script src="{% static '/plugins/bootstrap/bootstrap.min.js' %}" defer></script>
+{#  <!-- Slick Carousel -->#}
+  <script src="{% static '/plugins/slick/slick.min.js' %}"></script>
+  <script src="{% static 'plugins/slick/slick-animation.min.js'%}"></script>
+  <!-- Color box -->
+  <script src="{% static '/plugins/colorbox/jquery.colorbox.js' %}"></script>
+  <!-- shuffle -->
+  <script src="{% static '/plugins/shuffle/shuffle.min.js' %}" defer></script>
+    <script>
+        $(document).ready(function(){
+            // 监听删除按钮的点击事件
+            $('#delete_yes').click(function(){
+                // 显示模态框
+                $('#deleteConfirmModal').modal('show');
+            });
+        });
+
+        $(document).ready(function() {
+            // 当模态框中的移除按钮被点击时
+            $('#deleteConfirmModal').on('show.bs.modal', function(e) {
+                var studentid = $(e.relatedTarget).data('student-id'); // 获取按钮上的 data-student-id 值
+                var deleteUrl = '{% url "delete_enrolled_student" sid=0 cid=class_detail.cid %}'; // 0 这里只是一个占位符，实际不会用到
+                deleteUrl = deleteUrl.replace('0', studentid); // 替换占位符为实际的 studentid
+                $('#delete_yes_link').attr('href', deleteUrl); // 设置确认删除按钮的 href 属性
+            });
+        });
+    </script>
+
+</html>

@@ -1,0 +1,290 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/css/class_list_table.css' %}" type="text/css" rel="stylesheet"/>
+    <script src="{% static 'js/class_list_table.js' %}"></script>
+
+    <meta charset="UTF-8">
+    <title>class List</title>
+</head>
+
+<body>
+    {% include 'elements/navbar.html' %}
+
+    <h1 id="title">課程列表{% if available %}（進行中）{% else %}（已結束）{% endif %}</h1>
+    <div class="mb-3 row toolbar">
+                <div id="sort" class="col-5">
+        <div id="select_by_age">
+            <label for="gradeFilter">篩選年級:</label>
+            <select id="gradeFilter">
+                <option value="all">全部</option>
+                        <option value="兒美小">兒美小</option>
+                        <option value="兒美中">兒美中</option>
+                        <option value="兒美大">兒美大</option>
+                        <option value="國小一">國小一</option>
+                        <option value="國小二">國小二</option>
+                        <option value="國小三">國小三</option>
+                        <option value="國小四">國小四</option>
+                        <option value="國小五">國小五</option>
+                        <option value="國小六">國小六</option>
+                        <option value="國一">國一</option>
+                        <option value="國二">國二</option>
+                        <option value="國三">國三</option>
+                        <option value="高一">高一</option>
+                        <option value="高二">高二</option>
+                        <option value="高三">高三</option>
+                        <option value="留學">留學</option>
+                        <option value="社會人士">社會人士</option>
+                        <option value="其他">其他</option>
+
+            </select>
+        </div>
+
+        <div id="select_by_year">
+            <label for="yearFilter">篩選年份:</label>
+            <select id="yearFilter">
+                <option value="all">全部</option>
+                {% for i in semester %}
+                    <option value="{{ i.semid }}">{{ i.semText }}</option>
+                {% endfor %}
+
+            </select>
+        </div>
+    </div>
+
+            <div id="search_bar" class="col-2">
+                    <div class="">
+                        <input type="text" id="searchInput" placeholder="搜索課程" class="form-control">
+                    </div>
+            </div>
+
+            <div class="form-check col-3" id="available_filter">
+                <div class="">
+                    <input class="form-check-input" type="radio" name="redirect" id="flexRadioDefault1" value="{% url 'class_list' available=1 %}" {% if available == 1 %}checked{% endif %} onchange="redirectTo(this)">
+                    <label class="form-check-label" for="flexRadioDefault1">進行中</label>
+                </div>
+
+                <div class="">
+                    <input class="form-check-input payment_filter_radio" type="radio" name="redirect" id="flexRadioDefault2" value="{% url 'class_list' available=0 %}" {% if available == 0 %}checked{% endif %} onchange="redirectTo(this)">
+                    <label class="form-check-label" for="flexRadioDefault2">已結束</label>
+                </div>
+            </div>
+
+
+            <div id="add_class_div" class="col-2">
+                {% if session.login %}
+                    {% if session.permission == 1 %}
+                        <a id="add_class" class="btn btn-success" href="{% url 'add_class' %}">新增課程</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+{#            <div class="form-check form-switch col-1">#}
+{#              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">#}
+{#              <label class="form-check-label" for="flexSwitchCheckDefault">表格</label>#}
+{#            </div>#}
+        </div>
+
+
+    <table class="class_list">
+        <thead>
+            <tr>
+                <th >課名</th>
+                <th>年級</th>
+                <th>年度</th>
+                <th>星期幾</th>
+                <th>時間</th>
+                <th>老師</th>
+                <th>名額</th>
+                <th>餘額</th>
+                <th>操作</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for i in class_list %}
+                <tr class="classes">
+                    <td class="class_title bold">
+                        <a class="class_name text_size" href="{% url 'class_detail' cid=i.cid %}">
+                            {{ i.category }}
+                            {% if i.subject%}
+                                - {{ i.subject }}
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td class="years_old center text_size">
+                            {% spaceless %}
+                                {% if i.years_old %}
+                                    {{ i.years_old }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            {% endspaceless %}
+                    </td>
+                    <td class="year center text_size">
+                        {{ i.semText}}<span class="years" style="display:none">{{ i.semid }}</span>
+                    </td>
+                    <td class="week center text_size">星期{{ i.day }}</td>
+                    <td class="time center text_size">{{ i.time |date:"H:i"}}</td>
+                    <td class="teacher center text_size">{{ i.teacher_name }}</td>
+                    <td class="quota center text_size">{{ i.quota }}</td>
+                    <td class="remain center text_size">
+                        {% if i.remain <= 0 %}
+                            <span class="red">額滿</span>
+                        {% else %}
+                            <span class="green bold">{{ i.remain }}</span>
+                        {% endif %}
+                    </td>
+                    <td class="center" >
+{#                        <div id="edit_delete_button">#}
+                            <div class="mb-1">
+                            {% if session.login %}
+                                {% if session.permission == 1 %}
+                                    {% if available %}
+                                        <a data-toggle="modal" data-target="#endConfirmModal" class="btn btn-warning " data-class-id="{{ i.cid }}">結束</a>
+                                    {% else %}
+                                        <a data-toggle="modal" data-target="#recoverConfirmModal" class="btn btn-success " data-class-id="{{ i.cid }}">恢復</a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                                <a class="btn btn-blue" href="{% url 'class_detail' cid=i.cid %}">詳情</a>
+                            </div >
+                            {% if session.login %}
+                                <a class="btn btn-blue" href="{% url 'add_enroll' cid=i.cid %}" >學生</a>
+
+                                {% if session.permission == 1 %}
+                                    <a class="btn btn-info" href="{% url 'edit_class' cid=i.cid %}">編輯</a>
+                                    <a data-toggle="modal" data-target="#deleteConfirmModal" class="btn btn-danger" data-class-id="{{ i.cid }}">刪除</a>
+                                    <a class="btn btn-outline-primary" href="{% url 'copy_class' cid=i.cid %}">複製</a>
+                                {% endif %}
+                            {% endif %}
+{#                        </div>#}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+
+{#    </div>#}
+
+    <!--刪除確認欄-->
+    <div class="modal" id="deleteConfirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">確定要刪除嗎</div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" id="delete_no" data-dismiss="modal">保留</button>
+                    <a id="delete_yes_link" href=""><button class="btn btn-danger" id="delete_yes">確認刪除</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="endConfirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">確定要設為結束嗎</div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" id="delete_no" data-dismiss="modal">保留</button>
+                    <a id="end_yes_link" href=""><button class="btn btn-warning" id="delete_yes">確認結束</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="recoverConfirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">確定要恢復該課程嗎</div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning" id="delete_no" data-dismiss="modal">不恢復</button>
+                    <a id="recover_yes_link" href=""><button class="btn btn-success" id="delete_yes">確認恢復</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+  <script src="{% static '/plugins/jQuery/jquery.min.js' %}"></script>
+{#  <!-- Bootstrap jQuery -->#}
+  <script src="{% static '/plugins/bootstrap/bootstrap.min.js' %}" defer></script>
+{#  <!-- Slick Carousel -->#}
+  <script src="{% static '/plugins/slick/slick.min.js' %}"></script>
+  <script src="{% static 'plugins/slick/slick-animation.min.js'%}"></script>
+  <!-- Color box -->
+  <script src="{% static '/plugins/colorbox/jquery.colorbox.js' %}"></script>
+  <!-- shuffle -->
+  <script src="{% static '/plugins/shuffle/shuffle.min.js' %}" defer></script>
+    <script>
+        $(document).ready(function(){
+            // 监听删除按钮的点击事件
+            $('#delete_yes').click(function(){
+                // 显示模态框
+                $('#deleteConfirmModal').modal('show');
+            });
+        });
+
+        $(document).ready(function(){
+            // 监听删除按钮的点击事件
+            $('#delete_yes').click(function(){
+                // 显示模态框
+                $('#endConfirmModal').modal('show');
+            });
+        });
+
+        $(document).ready(function(){
+            // 监听删除按钮的点击事件
+            $('#delete_yes').click(function(){
+                // 显示模态框
+                $('#recoverConfirmModal').modal('show');
+            });
+        });
+
+        $(document).ready(function() {
+            // 当模态框中的移除按钮被点击时
+            $('#deleteConfirmModal').on('show.bs.modal', function(e) {
+
+                var cid = $(e.relatedTarget).data('class-id'); // 获取按钮上的 data-student-id 值
+                var deleteUrl = '{% url "delete_class_action" cid=0 %}'; // 0 这里只是一个占位符，实际不会用到
+                deleteUrl = deleteUrl.replace('0', cid); // 替换占位符为实际的 studentid
+                $('#delete_yes_link').attr('href', deleteUrl); // 设置确认删除按钮的 href 属性
+            });
+        });
+
+        $(document).ready(function() {
+            // 当模态框中的移除按钮被点击时
+            $('#endConfirmModal').on('show.bs.modal', function(e) {
+                var cid = $(e.relatedTarget).data('class-id'); // 获取按钮上的 data-student-id 值
+                var endUrl = '{% url "end_class_action" cid=0 %}'; // 0 这里只是一个占位符，实际不会用到
+                endUrl = endUrl.replace('0', cid); // 替换占位符为实际的 studentid
+                $('#end_yes_link').attr('href', endUrl); // 设置确认删除按钮的 href 属性
+            });
+        });
+
+        $(document).ready(function() {
+            // 当模态框中的移除按钮被点击时
+            $('#recoverConfirmModal').on('show.bs.modal', function(e) {
+                var cid = $(e.relatedTarget).data('class-id'); // 获取按钮上的 data-student-id 值
+                var recoverUrl = '{% url "recover_class_action" cid=0 %}'; // 0 这里只是一个占位符，实际不会用到
+                recoverUrl = recoverUrl.replace('0', cid); // 替换占位符为实际的 studentid
+                $('#recover_yes_link').attr('href', recoverUrl); // 设置确认删除按钮的 href 属性
+            });
+        });
+
+        function redirectTo(radio) {
+            // Check if the radio button is checked
+            if (radio.checked) {
+                // Redirect to the URL specified in the value attribute
+                window.location.href = radio.value;
+            }
+        }
+    </script>
+
+</html>

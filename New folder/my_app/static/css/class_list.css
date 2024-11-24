@@ -1,0 +1,185 @@
+/*.class_list{*/
+/*    display:flex;*/
+/*    flex-wrap: wrap*/
+
+
+/*}*/
+
+/*.classes{*/
+/*    border: 1px black solid;*/
+/*    margin:5px;*/
+/*    flex: 0 0 30%; !* 每个子元素占据父容器宽度的三分之一 *!*/
+/*    box-sizing: border-box; !* 包括padding和border在内的宽度计算 *!*/
+/*    padding: 10px; !* 可选：添加一些内边距 *!*/
+/*}*/
+
+.bold{ font-weight: bold;}
+
+
+body {
+    background-color: #f8f8f8; /* 背景色為非常淺的灰色，增強對比 */
+    color: #333; /* 文字顏色為深灰色，增強可讀性 */
+    font-family: Arial, sans-serif; /* 設置字體 */
+}
+
+p {
+    margin: 0;
+    padding: 5px 0;
+}
+
+#title{
+    margin-top:100px;
+    margin-left:50px;
+    margin-bottom:50px;
+    text-align: center;
+}
+
+.class_list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* 使項目在父容器中居中 */
+    padding: 20px;
+    padding-top:0px;
+    gap: 10px; /* 添加項目之間的間距 */
+
+}
+
+.classes {
+    border: 1px solid #333; /* 邊框顏色為深灰色 */
+    margin: 5px;
+    flex: 0 0 30%; /* 每個子元素占據父容器寬度的三分之一 */
+    box-sizing: border-box; /* 包括padding和border在內的寬度計算 */
+    padding: 20px; /* 添加一些內邊距 */
+    background-color: #fff; /* 背景色為白色 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加輕微的陰影 */
+    transition: transform 0.2s, box-shadow 0.2s; /* 添加過渡效果 */
+}
+
+.classes:hover {
+    transform: scale(1.05); /* 當鼠標懸停時放大元素 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 增強陰影效果 */
+}
+
+.classes p {
+    margin: 0;
+    padding: 5px 0;
+    font-size: 1rem; /* 設置字體大小 */
+    border-bottom: 1px solid #ddd; /* 添加底部邊框 */
+}
+
+.classes p:last-child {
+    border-bottom: none; /* 移除最後一個段落的底部邊框 */
+}
+
+.subtitle {
+    border: 1px solid black;
+    background-color: black;
+    color: white;
+    padding: 5px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+a:hover{
+    color: gray;
+}
+
+.btn-blue{
+    background-color:#007bff;
+    color:white;
+}
+
+.btn-blue:hover{
+    background-color: #0563c7;
+    color:white;
+}
+.red {
+    color:red;
+}
+.green {
+    color:green;
+}
+
+/*篩選器*/
+label {
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 30px;
+    color: #333;
+}
+
+#select_by_age,#select_by_year{
+    /*margin:10px;*/
+    margin-left:50px;
+    font-size: 30px;
+}
+
+#sort{
+    display:flex;
+    /*margin-top:20px;*/
+}
+
+#gradeFilter,#yearFilter,#categoryFilter {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+option{
+    font-size:20px;
+}
+
+#available_filter{
+    display:flex;
+    justify-content: space-around;
+    padding-top:5px;
+}
+
+.toolbar{
+    display:flex;
+    justify-content: space-between;
+    margin:10px;
+}
+.form-check-label{
+    font-size:30px;
+}
+
+#add_class_div{
+    padding-right:20px;
+    /*margin-left:5%;*/
+    /*margin-right:5%;*/
+}
+
+#edit_delete_button{
+    display:flex;
+    justify-content: flex-end;
+}
+
+#edit_delete_button>a{
+    margin:5px;
+}
+
+#search_bar{
+    /*margin-top:5px;*/
+}
+
+.class_title{
+    display:flex;
+    justify-content: space-between
+}
+
+.class_name{
+    padding-bottom: 9px;
+    padding-top: 9px;
+}

@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>無權檢視此頁面</title>
+    <link href= "{%static '/css/bootstrap_css/bootstrap.css' %}" type="text/css" rel="stylesheet"/>
+    <link href= "{%static '/plugins/bootstrap/bootstrap.min.css' %}" type="text/css" rel="stylesheet"/>
+    <link href="../static/css/bootstrap_css/bootstrap.min.css" rel="stylesheet">
+    <link href= "{%static '/css/no_access.css' %}" type="text/css" rel="stylesheet"/>
+
+</head>
+<body>
+    {% include 'elements/navbar.html' %}
+
+    <!-- Error 404 Template 1 - Bootstrap Brain Component -->
+    <section class="py-3 py-md-5 min-vh-100 d-flex justify-content-center align-items-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+
+        <div id="access_denied_icon" class="d-flex justify-content-center">
+            <img class="" src="{%static '/img/access_denied.png'%}" alt="access_denied" style="">
+        </div>
+
+        <div class="text-center">
+          <h2 class="d-flex justify-content-center align-items-center gap-2 mb-4">
+            <span class="display-1 fw-bold">你無權查看此頁面</span>
+          </h2>
+          <h3 class="h2 mb-2">你可以回到首頁或者切換其他賬號</h3>
+
+          <a class="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0" href="{% url 'homepage' %}" role="button">返回首頁</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
